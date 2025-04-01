@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "venv":"virtualenv .venv",
+    "active":". .venv/bin/activate",
+    "pip": "pip install -r requirements.txt",
+    "ngrok":"ngrok http 5000",
+    "dev":"flask run --debug"
   },
   "keywords": [],
   "author": "",

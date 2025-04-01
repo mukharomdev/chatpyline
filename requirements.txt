@@ -1,2 +1,5 @@
 flask
 line-bot-sdk
+wit
+python-dotenv
+ngrok
