@@ -38,7 +38,7 @@ from linebot.v3.messaging import (
 )
 
 from config import *
-from nlp import handle_message
+from nlp import *
 
 
 app = Flask(__name__)
@@ -105,6 +105,11 @@ def callback():
 @handler.add(MessageEvent, message=TextMessageContent)
 def message_text(event):
     handle_message(event)
+
+
+
+
+    
 
 if __name__ == "__main__":
     arg_parser = ArgumentParser(
