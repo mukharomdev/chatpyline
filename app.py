@@ -13,16 +13,14 @@
 #  under the License.
 
 
-import os
+
 import sys
 from argparse import ArgumentParser
-from dotenv import load_dotenv
-
-load_dotenv()  # take environment variables
 
 from flask import Flask, request, abort
 from linebot import (
-    WebhookParser
+    WebhookParser,
+    WebhookHandler
 )
 from linebot.v3.exceptions import (
     InvalidSignatureError
@@ -39,11 +37,15 @@ from linebot.v3.messaging import (
     TextMessage
 )
 
+from config import *
+from nlp import handle_message
+
+
 app = Flask(__name__)
 
 # get channel_secret and channel_access_token from your environment variable
-channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
-channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
+channel_secret = lineChannelSecret
+channel_access_token = lineChannelAccessToken
 if channel_secret is None:
     print('Specify LINE_CHANNEL_SECRET as environment variable.')
     sys.exit(1)
@@ -52,6 +54,7 @@ if channel_access_token is None:
     sys.exit(1)
 
 parser = WebhookParser(channel_secret)
+handler = WebhookHandler(channel_secret)
 
 configuration = Configuration(
     access_token=channel_access_token
@@ -78,6 +81,7 @@ def callback():
     # parse webhook body
     try:
         events = parser.parse(body, signature)
+        handler.handle(body, signature)
     except InvalidSignatureError:
         abort(400)
 
@@ -98,6 +102,9 @@ def callback():
 
     return 'OK'
 
+@handler.add(MessageEvent, message=TextMessageContent)
+def message_text(event):
+    handle_message(event)
 
 if __name__ == "__main__":
     arg_parser = ArgumentParser(
