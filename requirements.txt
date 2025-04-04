@@ -5,3 +5,5 @@ python-dotenv
 ngrok
 psycopg2-binary
 flask_sqlalchemy
+flake8
+flake8-import-order

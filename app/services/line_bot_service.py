@@ -1,9 +1,11 @@
+from app.config import Config
 from linebot import LineBotApi
 from linebot.models import TextSendMessage
 from linebot.exceptions import LineBotApiError
-from config import Config
 
-line_bot_api = LineBotApi(Config.LINE_CHANNEL_ACCESS_TOKEN)
+
+line_bot_api = LineBotApi(Config.lineChannelAccessToken)
+
 
 class LineBotService:
     @staticmethod
@@ -16,11 +18,13 @@ class LineBotService:
         except LineBotApiError as e:
             print(f"Error when replying message: {e}")
     
+
     @staticmethod
     def get_user_profile(user_id):
         try:
             profile = line_bot_api.get_profile(user_id)
             return profile
+
         except LineBotApiError as e:
             print(f"Error getting user profile: {e}")
             return None

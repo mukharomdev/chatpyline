@@ -2,14 +2,14 @@ from flask import Blueprint, request, jsonify
 from linebot import WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage
-from config import Config
+from app.config import Config
 from app.services.line_bot_service import LineBotService
 from app.repositories.user_repository import UserRepository
 from app.repositories.message_repository import MessageRepository
 
 webhook_bp = Blueprint('webhook', __name__)
 
-handler = WebhookHandler(Config.LINE_CHANNEL_SECRET)
+handler = WebhookHandler(Config.lineChannelSecret)
 
 @webhook_bp.route('/webhook', methods=['POST'])
 def webhook():
