@@ -3,6 +3,7 @@ line-bot-sdk
 wit
 python-dotenv
 ngrok
+pyngrok
 psycopg2-binary
 flask_sqlalchemy
 flake8
