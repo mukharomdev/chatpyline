@@ -4,4 +4,4 @@ wit
 python-dotenv
 ngrok
 psycopg2-binary
-flask-sqlalchemy
+flask_sqlalchemy
