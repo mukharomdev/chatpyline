@@ -314,3 +314,5 @@ cython_debug/
 
 # env
 .env1
+.env2
+*.pem

@@ -6,6 +6,7 @@ from pyngrok import ngrok
 import threading
 import time
 import logging
+import ssl
 
 
 
@@ -15,8 +16,11 @@ app = create_app()
 def log_flask():
     logging.basicConfig(filename='app.log', level=logging.INFO)
 def run_flask():
-    app.run(debug=True, use_reloader=False,host='0.0.0.0', port=5000)
+    app.run(debug=True, use_reloader=False,host='pelatge.localtest.me', port=443,ssl_context=context)
 if __name__ == '__main__':
+
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+    context.load_cert_chain('pelatge.localtest.me.pem','pelatge.localtest.me-key.pem')
     
      # Jalankan Flask di thread terpisah
     threading.Thread(target=run_flask).start()
@@ -24,10 +28,10 @@ if __name__ == '__main__':
     # logging 
     threading.Thread(target=log_flask).start()
     # Setup ngrok
-    ngrok.set_auth_token(Config.ngrokAuthToken)
-    public_url = ngrok.connect(5000, "http")
-    print(" * Ngrok tunnel:", public_url)
-    
+    # ngrok.set_auth_token(Config.ngrokAuthToken)
+    # public_url = ngrok.connect(5000, "http")
+    # print(" * Ngrok tunnel:", public_url)
+    print("Using https localhost")
     # Biarkan aplikasi tetap running
     while True:
         time.sleep(1)
