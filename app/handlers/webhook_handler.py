@@ -7,6 +7,7 @@ from app.services.line_bot_service import LineBotService
 from app.repositories.user_repository import UserRepository
 from app.repositories.message_repository import MessageRepository
 from app.nlp import handle_message_nlp
+
 webhook_bp = Blueprint('webhook', __name__)
 
 handler = WebhookHandler(Config.lineChannelSecret)
