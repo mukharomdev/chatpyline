@@ -20,3 +20,9 @@ DATABASE_URL=
 # NGROK
 
 NGROK_AUTH_TOKEN=
+
+
+# Mode
+
+FLASK_ENV_DEV='development'
+FLASK_ENV_PROD='production'
