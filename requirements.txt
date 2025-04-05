@@ -5,6 +5,7 @@ python-dotenv
 ngrok
 pyngrok
 psycopg2-binary
+sqlalchemy 
 flask_sqlalchemy
 flake8
 flake8-import-order
