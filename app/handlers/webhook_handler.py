@@ -6,7 +6,7 @@ from app.config import Config
 from app.services.line_bot_service import LineBotService
 from app.repositories.user_repository import UserRepository
 from app.repositories.message_repository import MessageRepository
-
+from app.nlp import handle_message_nlp
 webhook_bp = Blueprint('webhook', __name__)
 
 handler = WebhookHandler(Config.lineChannelSecret)
@@ -39,5 +39,6 @@ def handle_message(event):
     MessageRepository.create(user.id, message_text, 'text')
     
     # Process message and reply
-    response = f"Anda mengirim: {message_text}"
-    LineBotService.reply_message(event.reply_token, response)
+    # response = f"Anda mengirim: {message_text}"
+    # LineBotService.reply_message(event.reply_token, response)
+    handle_message_nlp(event)

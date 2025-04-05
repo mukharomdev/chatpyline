@@ -7,5 +7,6 @@ pyngrok
 psycopg2-binary
 sqlalchemy 
 flask_sqlalchemy
+flask-migrate
 flake8
 flake8-import-order

@@ -1,10 +1,10 @@
 from linebot import LineBotApi, WebhookHandler
 from linebot.models import TextMessage, MessageEvent, TextSendMessage
 import requests
-from config import *
+from app.config import Config
 
-line_bot_api = LineBotApi(lineChannelAccessToken)
-def handle_message(event):
+line_bot_api = LineBotApi(Config.lineChannelAccessToken)
+def handle_message_nlp(event):
     user_message = event.message.text
     user_id = event.source.user_id
 
@@ -16,8 +16,8 @@ def handle_message(event):
     # Logika respons berdasarkan intent
     if intent == 'greeting' and confidence > 0.8:
         reply_text = "Halo! Ada yang bisa saya bantu?"
-    elif intent == 'ask_weather' and confidence > 0.7:
-        reply_text = "Cuaca hari ini cerah!"
+    elif intent == 'order' and confidence > 0.7:
+        reply_text = "siap mau pesan apa?"
     else:
         reply_text = "Maaf, saya tidak mengerti."
 
@@ -30,13 +30,13 @@ def handle_message(event):
 # Panggil Wit.ai API
 def call_witai(text):
     headers = {
-        'Authorization': f'Bearer {nlpClientToken}',
+        'Authorization': f'Bearer {Config.nlpClientToken}',
         'Content-Type': 'application/json'
     }
     params = {'q': text}
-    response = requests.get(nlpClientUrl, headers=headers, params=params)
+    response = requests.get(Config.nlpClientUrl, headers=headers, params=params)
     return response.json()
 
 
 
-__ALL__ = [handle_message]
+__ALL__ = ['handle_message_nlp']
