@@ -313,6 +313,5 @@ cython_debug/
 .pypirc
 
 # env
-.env1
-.env2
+.env-secret
 *.pem

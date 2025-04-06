@@ -25,8 +25,10 @@ def run_flask():
     context.minimum_version = ssl.TLSVersion.TLSv1_2  # Hanya TLS 1.3
     # context.set_ciphers('ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384')
     # context.verify_mode = ssl.CERT_REQUIRED
-    context.load_cert_chain('pelatge.localtest.me.pem','pelatge.localtest.me-key.pem')
-    app.run(debug=True, use_reloader=False,host='pelatge.localtest.me', port=443,ssl_context=context)
+    context.load_cert_chain(
+    'pelatge.localtest.me.pem',
+    'pelatge.localtest.me-key.pem')    
+    app.run(debug=True, use_reloader=False,host='pelatge.localtest.me', port=8443,ssl_context=context)
 if __name__ == '__main__':
 
     try :    
@@ -36,9 +38,9 @@ if __name__ == '__main__':
         # logging 
         threading.Thread(target=log_flask).start()
         # Setup ngrok
-        # ngrok.set_auth_token(Config.ngrokAuthToken)
-        # public_url = ngrok.connect(5000, "http")
-        # print(" * Ngrok tunnel:", public_url)
+        ngrok.set_auth_token(Config.ngrokAuthToken)
+        public_url = ngrok.connect(8443, "http")
+        print(" * Ngrok tunnel:", public_url)
         print("Using https localhost")
     except Exception as e:
         print(f"Error: {e}")
