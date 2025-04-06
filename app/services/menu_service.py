@@ -1,6 +1,18 @@
 from linebot.models import FlexSendMessage
-from models.menu import MenuItem
-from templates.flex_messages import menu_template
+from linebot.models import (
+    TextSendMessage,
+    TemplateSendMessage,
+    ButtonsTemplate,
+    PostbackTemplateAction,
+    QuickReply,
+    QuickReplyButton,
+    MessageAction
+)
+from app.models.menu import MenuItem
+from app.templates import menu_template
+from app.extensions import db
+from app.services.line_bot_service import line_bot_api
+
 
 def send_menu_options(user_id, line_bot_api):
     categories = db.session.query(MenuItem.category).distinct().all()
@@ -14,7 +26,7 @@ def send_menu_options(user_id, line_bot_api):
     reply = TextSendMessage(
         text="Pilih kategori menu:",
         quick_reply=QuickReply(items=items)
-    
+    )
     line_bot_api.push_message(user_id, reply)
     
 

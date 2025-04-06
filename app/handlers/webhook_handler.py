@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from linebot import WebhookHandler
+from linebot import WebhookHandler,LineBotApi
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage
 from app.config import Config
@@ -7,14 +7,16 @@ from app.services.line_bot_service import LineBotService
 from app.repositories.user_repository import UserRepository
 from app.repositories.message_repository import MessageRepository
 from app.nlp import handle_message_nlp
-
+from .message_handler import handle_text_message
 webhook_bp = Blueprint('webhook', __name__)
 
 handler = WebhookHandler(Config.lineChannelSecret)
+line_bot_api = LineBotApi(Config.lineChannelAccessToken)
+
 
 @webhook_bp.route('/',methods=['GET'])
 def home():
-    return "Hello HTTPS World!"
+    return jsonify({"status": "success"}), 200
 
 
 @webhook_bp.route('/webhook', methods=['POST'])
@@ -47,4 +49,6 @@ def handle_message(event):
     # Process message and reply
     # response = f"Anda mengirim: {message_text}"
     # LineBotService.reply_message(event.reply_token, response)
-    handle_message_nlp(event)
+    # handle_message_nlp(event)
+    # 
+    handle_text_message(event,line_bot_api)
