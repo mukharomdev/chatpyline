@@ -12,6 +12,11 @@ webhook_bp = Blueprint('webhook', __name__)
 
 handler = WebhookHandler(Config.lineChannelSecret)
 
+@webhook_bp.route('/',methods=['GET'])
+def home():
+    return "Hello HTTPS World!"
+
+
 @webhook_bp.route('/webhook', methods=['POST'])
 def webhook():
     signature = request.headers['X-Line-Signature']
