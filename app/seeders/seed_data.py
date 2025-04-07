@@ -13,6 +13,20 @@ menu_data = [
         'price': 15000,        
         'category': 'minuman',
         'image':'https://example.com/escincau.jpg'
+    },
+    {
+        'name': 'Bakso urat',
+        'desc': 'Bakso urat spesial',
+        'price': 15000,        
+        'category': 'makanan',
+        'image':'https://example.com/baksourat.jpg'
+    },
+    {
+        'name': 'Es kelapa muda',
+        'desc': 'Es Kelapa muda spesial',
+        'price': 15000,        
+        'category': 'minuman',
+        'image':'https://example.com/eskelapamuda.jpg'
     }
 ]
 
