@@ -34,7 +34,7 @@ def generate(menu_items):
                     "contents": [
                         {
                             "type": "text",
-                            "text": f"Rp{item['price'],}",
+                            "text": f"Rp{item['price']}",
                             "weight": "bold",
                             "size": "md",
                             "flex": 0,
