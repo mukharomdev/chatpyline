@@ -8,7 +8,7 @@ def handle_text_message(event, line_bot_api):
     
     if 'menu' in user_message:
         from app.services.menu_service import send_menu_options
-        send_menu_options(event.source.user_id, line_bot_api)
+        send_menu_options(event,event.source.user_id, line_bot_api)
         
     elif 'pesan' in user_message or 'order' in user_message:
         from app.services.order_service import start_order_flow
