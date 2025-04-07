@@ -6,6 +6,13 @@ menu_data = [
         'price': 15000,        
         'category': 'makanan',
         'image':'https://example.com/jpg'
+    },
+    {
+        'name': 'Es Cincau',
+        'desc': 'Es Cincau segar',
+        'price': 15000,        
+        'category': 'minuman',
+        'image':'https://example.com/jpg'
     }
 ]
 

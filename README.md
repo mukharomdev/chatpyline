@@ -1,3 +1,13 @@
-# seeder
+# seeder database
 
-- python -m app.seeders.database_seeder
+```terminal
+python -m app.seeders.database_seeder
+```
+
+# migration database
+
+```terminal
+$ flask db init
+$ flask db migrate
+$ flask db update
+```

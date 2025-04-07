@@ -8,12 +8,13 @@ import time
 import logging
 import ssl
 import requests
+import os
 
 
 sys.path.insert(0, str(Path(__file__).parent))
 
 app = create_app()
-
+PORT = 5000
 # Konfigurasi ngrok
 ngrok_config = conf.PyngrokConfig(
     auth_token=Config.ngrokAuthToken,
@@ -23,10 +24,15 @@ ngrok_config = conf.PyngrokConfig(
 
 
 
-def set_webhook_with_ngrok(tunnel,AccessToken=Config):
+def set_webhook_with_ngrok(AccessToken=Config):
     # Buka tunnel ngrok
+    tunnel = ngrok.connect(PORT, "http", pyngrok_config=ngrok_config)
+
     webhook_url = f"{tunnel.public_url}/webhook"
     
+    # # Dapatkan detail tunnel
+    print("Tunnel URL:", tunnel.public_url)
+    print("Tunnel Config:", tunnel.config)
     print(f"Ngrok URL: {webhook_url}")
     
     # Set webhook LINE
@@ -76,42 +82,44 @@ def run_flask():
     # 'pelatge.localtest.me.pem',
     # 'pelatge.localtest.me-key.pem')    
     # app.run(debug=True, use_reloader=False,host='pelatge.localtest.me', port=8443,ssl_context=context)
-    app.run(debug=True, use_reloader=False,host='0.0.0.0', port=5000)
+    app.run(debug=True, use_reloader=True,host='0.0.0.0', port=PORT)
+def background_thread():
+     # Biarkan aplikasi tetap running
+    while True:
+        time.sleep(5)
+
 if __name__ == '__main__':
 
     try : 
-        # # Buka tunnel dengan konfigurasi
-        tunnel = ngrok.connect(5000, "http", pyngrok_config=ngrok_config)
-        # # Dapatkan detail tunnel
-        print("Tunnel URL:", tunnel.public_url)
-        print("Tunnel Config:", tunnel.config)
-        # # Daftar semua tunnel aktif
-        # tunnels = ngrok.get_tunnels()
-        # print("Active Tunnels:", tunnels)
+
         
-        # set webhook otomatis 
-        set_webhook_with_ngrok(tunnel)
-        # Jalankan Flask di thread terpisah
-        threading.Thread(target=run_flask).start()
+        if os.environ.get('WERKZEUG_RUN_MAIN') != 'true':
+            # Jalankan Flask di thread terpisah
+            # threading.Thread(target=run_flask).start()
+            
+            # Running ngrok thread
+            Ngrok_thread = threading.Thread(target=set_webhook_with_ngrok)
+            Ngrok_thread.daemon = True
+            Ngrok_thread.start()
+
+            # logging 
+            logFlask_thread = threading.Thread(target=log_flask)
+            logFlask_thread.daemon = True
+            logFlask_thread.start()
+                   
+            # thread menangani autostart ngrok
+            # keepNgrokLive_thread = threading.Thread(target=keep_ngrok_alive, args=(PORT,))            
+            # keepNgrokLive_thread.daemon = True
+            # keepNgrokLive_thread.start()
+
+            # Background thread utama 
+            Bg_thread = threading.Thread(target=background_thread)
+            Bg_thread.daemon = True
+            Bg_thread.start()
+
         # tanpa thread 
-        # run_flask()
+        run_flask()
 
-        # logging 
-        threading.Thread(target=log_flask).start()
-        # Setup ngrok
-        # Konfigurasi ngrok
-        # ngrok_config = conf.PyngrokConfig(
-        #     auth_token=Config.ngrokAuthToken,
-        #     region="ap",  # asia-pacific
-        #     monitor_thread=False
-        # )
-
-
-        
-        # thread menangani autostart ngrok
-        threading.Thread(target=keep_ngrok_alive, args=(5000,), daemon=True).start()
     except Exception as e:
         print(f"Error: {e}")
-    # Biarkan aplikasi tetap running
-    while True:
-        time.sleep(1)
+   

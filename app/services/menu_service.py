@@ -11,7 +11,7 @@ from linebot.models import (
 from app.models.menu import MenuItem
 from app.templates import menu_template
 from app.extensions import db
-from app.services.line_bot_service import line_bot_api
+
 
 
 def send_menu_options(user_id, line_bot_api):

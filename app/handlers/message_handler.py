@@ -2,18 +2,14 @@ from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
     QuickReply, QuickReplyButton, MessageAction
 )
-from linebot import WebhookHandler,LineBotApi
-from app.config import Config
-from app.services.line_bot_service import line_bot_api
-line_bot_api = LineBotApi(Config.lineChannelAccessToken)
+
 def handle_text_message(event, line_bot_api):
     user_message = event.message.text.lower()
     
     if 'menu' in user_message:
-        from app.services.menu_service import send_menu_by_category
-        # send_menu_options(event.source.user_id, line_bot_api)
-        send_menu_by_category(event=event.source.user_id, line_bot_api=line_bot_api)
-
+        from app.services.menu_service import send_menu_options
+        send_menu_options(event.source.user_id, line_bot_api)
+        
     elif 'pesan' in user_message or 'order' in user_message:
         from app.services.order_service import start_order_flow
         start_order_flow(event.source.user_id, line_bot_api)
